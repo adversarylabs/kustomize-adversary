@@ -1,0 +1,3 @@
+images:
+  - name: example/app
+    newTag: latest
