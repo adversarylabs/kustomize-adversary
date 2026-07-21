@@ -10,6 +10,13 @@ triggers:
     - "**/kustomization.yml"
     - "**/kustomization.yaml"
 
+detection:
+  files:
+    - "kustomization.yml"
+    - "kustomization.yaml"
+    - "**/kustomization.yml"
+    - "**/kustomization.yaml"
+
 runtime:
   name: node
   version: "22"
