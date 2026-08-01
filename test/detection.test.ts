@@ -11,8 +11,9 @@ test("declares deterministic automatic detection", async () => {
     "kustomization.yml",
     "kustomization.yaml",
     "**/kustomization.yml",
-    "**/kustomization.yaml"
+    "**/kustomization.yaml",
+    "**/*.yaml",
+    "**/*.yml",
   ]);
   assert.equal(manifest.detection?.entrypoint, undefined);
 });
-

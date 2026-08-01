@@ -1,0 +1,6 @@
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+  - name: app
+    literals:
+      - log_level=info

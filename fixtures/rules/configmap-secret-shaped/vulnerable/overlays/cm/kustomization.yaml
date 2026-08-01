@@ -1,0 +1,4 @@
+configMapGenerator:
+  - name: app
+    literals:
+      - password=do-not-commit-this
