@@ -131,6 +131,27 @@ export declare const spec: {
             readonly requires: [];
         };
     }, {
+        readonly id: "kustomize.api-version-json-patch";
+        readonly title: "JSON patch rewrites a resource apiVersion";
+        readonly summary: "JSON patch rewrites a resource apiVersion";
+        readonly category: "reliability";
+        readonly severity: "high";
+        readonly confidence: "high";
+        readonly whyItMatters: "apiVersion is part of a Kubernetes resource's identity and schema contract. Rewriting it after generation can leave the object shaped for one API version but submitted as another.";
+        readonly impact: "The rendered object can fail validation, target a different API contract, or conceal that the base itself needs migration.";
+        readonly recommendation: "Update the base or generator to emit the intended apiVersion instead of JSON-patching /apiVersion.";
+        readonly complexity: "small";
+        readonly tags: ["reliability", "patch", "api-version"];
+        readonly match: {
+            readonly kind: "content";
+            readonly files: ["**/*.yaml", "**/*.yml"];
+            readonly pattern: {
+                readonly pattern: "(?:-\\s*op:\\s*(?:add|replace)\\s*(?:#.*)?\\r?\\n\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*$|-\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*(?:#.*)?\\r?\\n\\s*op:\\s*(?:add|replace)\\s*$)";
+                readonly flags: "im";
+            };
+            readonly requires: [];
+        };
+    }, {
         readonly id: "kustomize.latest-image";
         readonly title: "Image override uses a mutable tag";
         readonly summary: "Image override uses a mutable tag";

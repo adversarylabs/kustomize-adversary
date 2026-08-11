@@ -10,6 +10,7 @@ const ruleCases = [
   { key: "mutable-remote", id: "kustomize.mutable-remote" },
   { key: "configmap-secret-shaped", id: "kustomize.configmap-secret-shaped" },
   { key: "patch-privilege-escalation", id: "kustomize.patch-privilege-escalation" },
+  { key: "api-version-json-patch", id: "kustomize.api-version-json-patch" },
   { key: "latest-image", id: "kustomize.latest-image" },
   { key: "name-suffix-hash-disabled", id: "kustomize.name-suffix-hash-disabled" },
   { key: "namespace-default", id: "kustomize.namespace-default" },
