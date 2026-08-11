@@ -104,6 +104,28 @@ export const spec = {
             }
         },
         {
+            "id": "kustomize.api-version-json-patch",
+            "title": "JSON patch rewrites a resource apiVersion",
+            "summary": "JSON patch rewrites a resource apiVersion",
+            "category": "reliability",
+            "severity": "high",
+            "confidence": "high",
+            "whyItMatters": "apiVersion is part of a Kubernetes resource's identity and schema contract. Rewriting it after generation can leave the object shaped for one API version but submitted as another.",
+            "impact": "The rendered object can fail validation, target a different API contract, or conceal that the base itself needs migration.",
+            "recommendation": "Update the base or generator to emit the intended apiVersion instead of JSON-patching /apiVersion.",
+            "complexity": "small",
+            "tags": ["reliability", "patch", "api-version"],
+            "match": {
+                "kind": "content",
+                "files": ["**/*.yaml", "**/*.yml"],
+                "pattern": {
+                    "pattern": "(?:-\\s*op:\\s*(?:add|replace)\\s*(?:#.*)?\\r?\\n\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*$|-\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*(?:#.*)?\\r?\\n\\s*op:\\s*(?:add|replace)\\s*$)",
+                    "flags": "im"
+                },
+                "requires": []
+            }
+        },
+        {
             "id": "kustomize.latest-image",
             "title": "Image override uses a mutable tag",
             "summary": "Image override uses a mutable tag",
