@@ -7,6 +7,7 @@ interface ContentMatch {
     kind: "content";
     files: string[];
     pattern: MatchExpression;
+    anchors?: MatchExpression[];
     requires: MatchExpression[];
 }
 interface MissingContentMatch {
@@ -65,6 +66,13 @@ export declare const spec: {
                 readonly pattern: "secretGenerator:[\\s\\S]{0,260}literals:[\\s\\S]{0,160}(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+";
                 readonly flags: "i";
             };
+            readonly anchors: [{
+                readonly pattern: "secretGenerator:";
+                readonly flags: "i";
+            }, {
+                readonly pattern: "(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+";
+                readonly flags: "i";
+            }];
             readonly requires: [];
         };
     }, {
@@ -86,6 +94,13 @@ export declare const spec: {
                 readonly pattern: "(?:github\\.com|https?://)[^\\s]+(?:\\?ref=(?:main|master|HEAD)|#(?:main|master|HEAD)\\b)";
                 readonly flags: "i";
             };
+            readonly anchors: [{
+                readonly pattern: "configMapGenerator:";
+                readonly flags: "i";
+            }, {
+                readonly pattern: "(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+";
+                readonly flags: "i";
+            }];
             readonly requires: [];
         };
     }, {
@@ -107,6 +122,16 @@ export declare const spec: {
                 readonly pattern: "configMapGenerator:[\\s\\S]{0,260}literals:[\\s\\S]{0,160}(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+";
                 readonly flags: "i";
             };
+            readonly anchors: [{
+                readonly pattern: "(?:privileged|hostNetwork|hostPID|hostIPC):\\s*true|hostPath:";
+                readonly flags: "i";
+            }, {
+                readonly pattern: "capabilit(?:y|ies):";
+                readonly flags: "i";
+            }, {
+                readonly pattern: "(?:add\\s*:|SYS_ADMIN)";
+                readonly flags: "i";
+            }];
             readonly requires: [];
         };
     }, {
@@ -149,6 +174,13 @@ export declare const spec: {
                 readonly pattern: "(?:-\\s*op:\\s*(?:add|replace)\\s*(?:#.*)?\\r?\\n\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*$|-\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*(?:#.*)?\\r?\\n\\s*op:\\s*(?:add|replace)\\s*$)";
                 readonly flags: "im";
             };
+            readonly anchors: [{
+                readonly pattern: "op:\\s*(?:add|replace)";
+                readonly flags: "i";
+            }, {
+                readonly pattern: "path:\\s*[\\\"']?/apiVersion";
+                readonly flags: "i";
+            }];
             readonly requires: [];
         };
     }, {
