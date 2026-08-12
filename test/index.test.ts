@@ -13,6 +13,7 @@ const ruleCases = [
   { key: "api-version-json-patch", id: "kustomize.api-version-json-patch" },
   { key: "latest-image", id: "kustomize.latest-image" },
   { key: "name-suffix-hash-disabled", id: "kustomize.name-suffix-hash-disabled" },
+  { key: "deprecated-patches-strategic-merge", id: "kustomize.deprecated-patches-strategic-merge" },
   { key: "namespace-default", id: "kustomize.namespace-default" },
 ];
 
@@ -31,6 +32,13 @@ test("accepts a repository without applicable configuration", async () => {
   assert.deepEqual(output.findings, []);
   assert.equal(output.assessment?.risk, "none");
   assert.equal(output.opinion?.ship, true);
+});
+
+test("deprecated patchesStrategicMerge evidence points to the field", async () => {
+  const output = await review("rules/deprecated-patches-strategic-merge/vulnerable", true);
+  const observation = output.rawObservations?.find((item) => item.ruleId === "kustomize.deprecated-patches-strategic-merge");
+  assert.equal(observation?.location?.line, 7);
+  assert.equal(observation?.location?.snippet, "patchesStrategicMerge:");
 });
 
 test("output ordering and protocol envelope are deterministic", async () => {

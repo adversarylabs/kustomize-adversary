@@ -15,6 +15,7 @@ Review Kustomize overlays for mutable resources, image tags, and literal secrets
 - Mutable images in kustomization
 - Literal secrets in overlays
 - Dangerous patches
+- Deprecated Kustomize configuration fields in changed kustomization files
 
 ## Out of scope (not a miss for this adversary)
 

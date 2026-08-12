@@ -45,7 +45,7 @@ export declare const spec: {
     readonly id: "kustomize";
     readonly displayName: "Kustomize";
     readonly description: "Reviews Kustomize overlays for mutable resources, image tags, and literal secrets.";
-    readonly files: ["kustomization.yml", "kustomization.yaml", "**/kustomization.yml", "**/kustomization.yaml", "**/*.yaml", "**/*.yml"];
+    readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml", "**/*.yaml", "**/*.yml"];
     readonly rules: [{
         readonly id: "kustomize.literal-secret";
         readonly title: "Secret generator embeds a credential literal";
@@ -60,7 +60,7 @@ export declare const spec: {
         readonly tags: ["secrets", "literal-secret"];
         readonly match: {
             readonly kind: "content";
-            readonly files: ["kustomization.yml", "kustomization.yaml", "**/kustomization.yml", "**/kustomization.yaml"];
+            readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml"];
             readonly pattern: {
                 readonly pattern: "secretGenerator:[\\s\\S]{0,260}literals:[\\s\\S]{0,160}(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+";
                 readonly flags: "i";
@@ -81,7 +81,7 @@ export declare const spec: {
         readonly tags: ["supply-chain", "mutable-remote"];
         readonly match: {
             readonly kind: "content";
-            readonly files: ["kustomization.yml", "kustomization.yaml", "**/kustomization.yml", "**/kustomization.yaml"];
+            readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml"];
             readonly pattern: {
                 readonly pattern: "(?:github\\.com|https?://)[^\\s]+(?:\\?ref=(?:main|master|HEAD)|#(?:main|master|HEAD)\\b)";
                 readonly flags: "i";
@@ -102,7 +102,7 @@ export declare const spec: {
         readonly tags: ["secrets", "configmap"];
         readonly match: {
             readonly kind: "content";
-            readonly files: ["kustomization.yml", "kustomization.yaml", "**/kustomization.yml", "**/kustomization.yaml"];
+            readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml"];
             readonly pattern: {
                 readonly pattern: "configMapGenerator:[\\s\\S]{0,260}literals:[\\s\\S]{0,160}(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+";
                 readonly flags: "i";
@@ -165,7 +165,7 @@ export declare const spec: {
         readonly tags: ["supply-chain", "latest-image"];
         readonly match: {
             readonly kind: "content";
-            readonly files: ["kustomization.yml", "kustomization.yaml", "**/kustomization.yml", "**/kustomization.yaml"];
+            readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml"];
             readonly pattern: {
                 readonly pattern: "newTag:\\s*(?:latest|main|edge)\\b";
                 readonly flags: "i";
@@ -186,10 +186,31 @@ export declare const spec: {
         readonly tags: ["reliability", "generator"];
         readonly match: {
             readonly kind: "content";
-            readonly files: ["kustomization.yml", "kustomization.yaml", "**/kustomization.yml", "**/kustomization.yaml"];
+            readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml"];
             readonly pattern: {
                 readonly pattern: "disableNameSuffixHash:\\s*true";
                 readonly flags: "i";
+            };
+            readonly requires: [];
+        };
+    }, {
+        readonly id: "kustomize.deprecated-patches-strategic-merge";
+        readonly title: "Kustomization uses deprecated patchesStrategicMerge";
+        readonly summary: "Kustomization uses deprecated patchesStrategicMerge";
+        readonly category: "hygiene";
+        readonly severity: "low";
+        readonly confidence: "high";
+        readonly whyItMatters: "Kustomize deprecated patchesStrategicMerge in favor of the unified patches API.";
+        readonly impact: "Builds emit deprecation warnings and the overlay becomes harder to carry across Kustomize upgrades.";
+        readonly recommendation: "Move each strategic-merge patch file to a patches entry with a path field.";
+        readonly complexity: "trivial";
+        readonly tags: ["hygiene", "deprecation", "patches"];
+        readonly match: {
+            readonly kind: "content";
+            readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml"];
+            readonly pattern: {
+                readonly pattern: "^patchesStrategicMerge\\s*:";
+                readonly flags: "m";
             };
             readonly requires: [];
         };
@@ -207,7 +228,7 @@ export declare const spec: {
         readonly tags: ["hygiene", "namespace"];
         readonly match: {
             readonly kind: "content";
-            readonly files: ["kustomization.yml", "kustomization.yaml", "**/kustomization.yml", "**/kustomization.yaml"];
+            readonly files: ["Kustomization", "kustomization.yml", "kustomization.yaml", "**/Kustomization", "**/kustomization.yml", "**/kustomization.yaml"];
             readonly pattern: {
                 readonly pattern: "^namespace:\\s*default\\s*$";
                 readonly flags: "im";

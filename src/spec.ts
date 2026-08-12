@@ -12,8 +12,10 @@ export interface RuleSpec {
 export interface AdversarySpec { id: string; displayName: string; description: string; files: string[]; rules: RuleSpec[] }
 
 const KUSTOMIZATION_FILES = [
+  "Kustomization",
   "kustomization.yml",
   "kustomization.yaml",
+  "**/Kustomization",
   "**/kustomization.yml",
   "**/kustomization.yaml",
 ] as const;
@@ -175,6 +177,25 @@ export const spec = {
         "kind": "content",
         "files": [...KUSTOMIZATION_FILES],
         "pattern": { "pattern": "disableNameSuffixHash:\\s*true", "flags": "i" },
+        "requires": []
+      }
+    },
+    {
+      "id": "kustomize.deprecated-patches-strategic-merge",
+      "title": "Kustomization uses deprecated patchesStrategicMerge",
+      "summary": "Kustomization uses deprecated patchesStrategicMerge",
+      "category": "hygiene",
+      "severity": "low",
+      "confidence": "high",
+      "whyItMatters": "Kustomize deprecated patchesStrategicMerge in favor of the unified patches API.",
+      "impact": "Builds emit deprecation warnings and the overlay becomes harder to carry across Kustomize upgrades.",
+      "recommendation": "Move each strategic-merge patch file to a patches entry with a path field.",
+      "complexity": "trivial",
+      "tags": ["hygiene", "deprecation", "patches"],
+      "match": {
+        "kind": "content",
+        "files": [...KUSTOMIZATION_FILES],
+        "pattern": { "pattern": "^patchesStrategicMerge\\s*:", "flags": "m" },
         "requires": []
       }
     },
