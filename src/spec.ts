@@ -1,7 +1,7 @@
 import { type Confidence, type Severity } from "@adversarylabs/sdk";
 
 export interface MatchExpression { pattern: string; flags: string }
-interface ContentMatch { kind: "content"; files: string[]; pattern: MatchExpression; requires: MatchExpression[] }
+interface ContentMatch { kind: "content"; files: string[]; pattern: MatchExpression; anchors?: MatchExpression[]; requires: MatchExpression[] }
 interface MissingContentMatch { kind: "missing-content"; files: string[]; trigger: MatchExpression; required: MatchExpression }
 interface MissingFileMatch { kind: "missing-file"; triggerFiles: string[]; requiredFiles: string[] }
 export interface RuleSpec {
@@ -51,6 +51,10 @@ export const spec = {
           "pattern": "secretGenerator:[\\s\\S]{0,260}literals:[\\s\\S]{0,160}(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+",
           "flags": "i"
         },
+        "anchors": [
+          { "pattern": "secretGenerator:", "flags": "i" },
+          { "pattern": "(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+", "flags": "i" }
+        ],
         "requires": []
       }
     },
@@ -73,6 +77,10 @@ export const spec = {
           "pattern": "(?:github\\.com|https?://)[^\\s]+(?:\\?ref=(?:main|master|HEAD)|#(?:main|master|HEAD)\\b)",
           "flags": "i"
         },
+        "anchors": [
+          { "pattern": "configMapGenerator:", "flags": "i" },
+          { "pattern": "(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+", "flags": "i" }
+        ],
         "requires": []
       }
     },
@@ -95,6 +103,11 @@ export const spec = {
           "pattern": "configMapGenerator:[\\s\\S]{0,260}literals:[\\s\\S]{0,160}(?:password|token|secret|api[_-]?key|credential)\\s*=\\s*(?!\\$\\{)(?!changeme)(?!example)[^\\s#]+",
           "flags": "i"
         },
+        "anchors": [
+          { "pattern": "(?:privileged|hostNetwork|hostPID|hostIPC):\\s*true|hostPath:", "flags": "i" },
+          { "pattern": "capabilit(?:y|ies):", "flags": "i" },
+          { "pattern": "(?:add\\s*:|SYS_ADMIN)", "flags": "i" }
+        ],
         "requires": []
       }
     },
@@ -139,6 +152,10 @@ export const spec = {
           "pattern": "(?:-\\s*op:\\s*(?:add|replace)\\s*(?:#.*)?\\r?\\n\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*$|-\\s*path:\\s*[\\\"']?/apiVersion[\\\"']?\\s*(?:#.*)?\\r?\\n\\s*op:\\s*(?:add|replace)\\s*$)",
           "flags": "im"
         },
+        "anchors": [
+          { "pattern": "op:\\s*(?:add|replace)", "flags": "i" },
+          { "pattern": "path:\\s*[\\\"']?/apiVersion", "flags": "i" }
+        ],
         "requires": []
       }
     },
