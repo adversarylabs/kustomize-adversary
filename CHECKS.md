@@ -92,6 +92,17 @@ Public grounding: kustomize documentation (secretGenerator, remote targets, gene
 
 ## Low
 
+### `kustomize.deprecated-patches-strategic-merge`
+
+| | |
+| --- | --- |
+| **What** | Kustomization still uses the deprecated `patchesStrategicMerge` field |
+| **Why** | Kustomize replaced the separate strategic-merge field with the unified `patches` API; keeping the old field produces warnings and adds upgrade friction |
+| **Looks for** | A top-level `patchesStrategicMerge:` key in a kustomization file |
+| **Stays quiet when** | Patches use `patches` with `path`; the deprecated field appears only in a comment |
+| **Public examples** | Maintainer-approved migrations in Meshery Operator PR 838 and MetalLB Operator PR 549; upstream Kustomize issue 5052 |
+| **Remediation** | Move each file to a `patches` entry such as `- path: service.yaml` |
+
 ### `kustomize.namespace-default`
 
 | | |

@@ -8,8 +8,10 @@ test("declares deterministic automatic detection", async () => {
   const manifest = parseAdversaryManifest(source);
 
   assert.deepEqual(manifest.detection?.files, [
+    "Kustomization",
     "kustomization.yml",
     "kustomization.yaml",
+    "**/Kustomization",
     "**/kustomization.yml",
     "**/kustomization.yaml",
     "**/*.yaml",
