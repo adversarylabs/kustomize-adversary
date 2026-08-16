@@ -1,22 +1,26 @@
 # Kustomize adversary
 
-Reviews Kustomize overlays for mutable resources, image tags, and literal secrets.
+The Kustomize adversary reviews Kustomize source configuration before it is
+rendered or deployed. Its goal is to find high-confidence security,
+supply-chain, and reliability problems introduced by bases, generators,
+transformers, and overlays.
 
-## Checks
+## Scope
 
-- **Remote resource tracks a mutable branch:** Pin remote resources to immutable commits.
-- **Image override uses a mutable tag:** Use digest overrides for deployed images.
-- **Secret generator embeds a credential literal:** Use an encrypted or external secret source.
+The adversary scans Kustomization files named `Kustomization`,
+`kustomization.yaml`, or `kustomization.yml`, together with YAML patch files in
+the repository. It focuses on risks that are specific to the Kustomize
+composition layer, including mutable inputs, unsafe generator data, risky
+overlay patches, and configuration that makes deployments non-reproducible or
+stale.
 
-## Development
+Findings are deterministic and include file and line evidence. The complete
+detector inventory is in [CHECKS.md](CHECKS.md).
 
-```sh
-npm ci
-npm test
-adversary validate .
-adversary pack --check .
-```
+## Boundaries
 
-## Automatic detection
-
-`adversary auto` selects the kustomize adversary when changes include `kustomization.yml` or `kustomization.yaml`, plus the other domain-specific patterns declared in `adversary.yaml`. Unrelated changes do not select it.
+This adversary evaluates authored Kustomize configuration, not the fully
+rendered Kubernetes resources. Security policy for rendered workloads, RBAC,
+and raw manifests belongs to the `kubernetes` adversary. Helm chart analysis
+belongs to `helm`, and generic secrets outside Kustomize generators belong to
+`security/secrets`.
